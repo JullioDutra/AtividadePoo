@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Login</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div class="login-container">
+        <form id="login-form" class="login-form">
+            <h2>Login</h2>
+            <div class="input-group">
+                <label for="username">Nome de Usuário</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <button type="submit" class="login-button">Entrar</button>
+        </form>
+    </div>
+
+    <script>
+        // Função para armazenar o nome de usuário no localStorage ao submeter o formulário
+        document.getElementById("login-form").addEventListener("submit", function (event) {
+            event.preventDefault(); // Impede o envio padrão do formulário
+
+            // Pega o valor do campo "Nome de Usuário"
+            const username = document.getElementById("username").value;
+
+            // Lista de usuários permitidos
+            const validUsers = ["1", "2", "3"];
+
+            // Verifica se o nome de usuário é válido
+            if (validUsers.includes(username)) {
+                // Armazena o nome de usuário no localStorage
+                localStorage.setItem("username", username);
+
+                // Redireciona para a página da conta
+                window.location.href = "page/account.html";
+            } else {
+                alert("Usuário inválido. Apenas os usuários 1, 2 e 3 podem acessar.");
+            }
+        });
+    </script>
+</body>
+
+</html>

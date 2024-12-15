@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página da Conta</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Bem-vindo, <span id="account-name"></span>!</h1>
+        <div class="account-info">
+            <p><strong>Número da Conta:</strong> <span id="account-number"></span></p>
+            <p><strong>Saldo:</strong> R$ <span id="account-balance"></span></p>
+            <p><strong>Tipo de Conta:</strong> <span id="account-type"></span></p>
+            <p id="credit-limit" style="display:none;"><strong>Limite de Crédito:</strong> R$ <span
+                    id="account-credit-limit"></span></p>
+            <p id="debit-special-limit" style="display:none;"><strong>Limite de Débito Especial:</strong> R$ <span
+                    id="account-debit-special-limit"></span></p>
+        </div>
+
+        <div class="options">
+            <button onclick="transfer()">Transferir</button>
+            <button onclick="withdraw()">Sacar</button>
+        </div>
+
+        <div id="withdraw-modal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <h2>Saque</h2>
+                <label for="withdraw-amount">Digite o valor para sacar:</label>
+                <input type="number" id="withdraw-amount" placeholder="Valor do saque">
+                <button onclick="confirmWithdraw()">Confirmar Saque</button>
+                <button onclick="closeModal()">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados dos usuários
+        const users = {
+            "1": {
+                accountNumber: "123456789",
+                balance: 1500.00,
+                accountType: "conta normal",
+                creditLimit: 0.00,
+                debitSpecialLimit: 0.00
+            },
+            "2": {
+                accountNumber: "987654321",
+                balance: 2000.00,
+                accountType: "contaespecial",
+                creditLimit: 1000.00,
+                debitSpecialLimit: 0.00
+            },
+            "3": {
+                accountNumber: "1122334455",
+                balance: 500.00,
+                accountType: "contadebespecial",
+                creditLimit: 0.00,
+                debitSpecialLimit: 1000.00
+            }
+        };
+
+        // Pega o nome de usuário do localStorage
+        const username = localStorage.getItem("username");
+
+        if (!username) {
+            alert("Você precisa fazer login primeiro!");
+            window.location.href = "index.html"; // Redireciona para a tela de login se não houver usuário
+        }
+
+        // Carrega as informações do usuário baseado no número da conta
+        const currentUser = users[username];
+
+        // Exibe as informações do usuário na página
+        document.getElementById("account-name").textContent = username;
+        document.getElementById("account-number").textContent = currentUser.accountNumber;
+        document.getElementById("account-balance").textContent = currentUser.balance.toFixed(2);
+        document.getElementById("account-type").textContent = currentUser.accountType;
+
+        // Exibe o limite de crédito se for uma conta especial
+        if (currentUser.accountType === "contaespecial") {
+            document.getElementById("credit-limit").textContent = currentUser.creditLimit.toFixed(2);
+            document.getElementById("credit-limit").style.display = "block";
+        }
+
+        // Exibe o limite extra de débito se for uma conta de débito especial
+        if (currentUser.accountType === "contadebespecial") {
+            document.getElementById("debit-special-limit").textContent = currentUser.debitSpecialLimit.toFixed(2);
+            document.getElementById("debit-special-limit").style.display = "block";
+        }
+
+        // Funções de interação
+        function transfer() {
+            alert("Funcionalidade de Transferência ainda não implementada.");
+        }
+
+        function withdraw() {
+            document.getElementById("withdraw-modal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("withdraw-modal").style.display = "none";
+        }
+
+        function confirmWithdraw() {
+            const withdrawAmount = parseFloat(document.getElementById("withdraw-amount").value);
+
+            if (isNaN(withdrawAmount) || withdrawAmount <= 0) {
+                alert("Por favor, insira um valor válido.");
+                return;
+            }
+
+            let availableBalance = currentUser.balance;
+
+            // Se for uma conta especial, inclui o limite de crédito
+            if (currentUser.accountType === "contaespecial") {
+                availableBalance += currentUser.creditLimit;
+            }
+            // Se for uma conta de débito especial, inclui o limite extra
+            if (currentUser.accountType === "contadebespecial") {
+                availableBalance += currentUser.debitSpecialLimit;
+            }
+
+            // Verificando se o valor do saque é maior do que o saldo disponível
+            if (withdrawAmount > availableBalance) {
+                alert("Saldo insuficiente para realizar o saque.");
+                return;
+            }
+
+            currentUser.balance -= withdrawAmount;
+            document.getElementById("account-balance").textContent = currentUser.balance.toFixed(2);
+            alert("Saque realizado com sucesso!");
+            closeModal();
+        }
+    </script>
+</body>
+
+</html>
