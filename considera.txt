@@ -7,6 +7,8 @@ Allan Silveira de Lima - 2311427
 Samuel Elias Morais Pereira - 2310544
 João Marcelo Conceição Sousa - 2311149
 
+https://github.com/JullioDutra/AtividadePoo.git
+
 Fabio, não conseguimos fazer o programa conectar num front-end HTML,
 então fizemos as insterações dentro do console do Eclipse mesmo. 
 Não ficou perfeito, mas é oque conseguimos fazer sem ajuda. 
